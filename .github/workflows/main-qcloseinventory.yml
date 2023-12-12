@@ -1,0 +1,70 @@
+on:
+    push:
+        tags:
+            - 'v[0-9]+.[0-9]+.[0-9]+'
+
+name: INVENTORY
+
+jobs:
+
+    Build:
+        name: 📦 Build
+        runs-on: ubuntu-latest
+        
+        steps:
+            - name: Clone repository
+              uses: actions/checkout@v3
+
+            - name: Use Node.js 16.x
+              uses: actions/setup-node@v3
+              with:
+                node-version: 18
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Generate build
+              run: npm run build
+
+            - name: Upload dist folder
+              uses: actions/upload-artifact@v3
+              with:
+                name: dist
+                path: dist/
+
+    Deploy:
+        name: 🛒 Deploy
+        runs-on: ubuntu-latest
+        needs: [Build]
+
+        steps:
+
+            - name: download dist folder
+              uses: actions/download-artifact@v3
+              with:
+                name: dist
+                path: .
+
+            - name: 🔼 deploy image
+              uses: hazeezet/caprover-action@v1
+              with:
+                server: ${{ secrets.SERVER }}
+                app-token: ${{ secrets.DEV_APP_TOKEN }}
+                app-name: ${{ secrets.DEV_APP_NAME }}
+                registry-host: ${{ secrets.REGISTRY_HOST }}
+                registry-user: ${{ secrets.REGISTRY_USER }}
+                registry-token: ${{ secrets.REGISTRY_TOKEN }}
+                content: ./
+                dockerfile: ./Dockerfile
+                image-name: api-main
+
+    Clean-up:
+        name: 🧹 clean up
+        runs-on: ubuntu-latest
+        needs: [Deploy]
+
+        steps:
+            - name:
+              uses: geekyeggo/delete-artifact@v2
+              with:
+                name: dist
+                

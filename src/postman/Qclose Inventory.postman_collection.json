@@ -1,0 +1,3803 @@
+{
+	"info": {
+		"_postman_id": "36b6ae62-ece6-4bff-ba46-f86be613dad2",
+		"name": "Qclose Inventory",
+		"description": "An API to handle all endpoint of the inventory.\n\n**NOTE**\n\nAll status code is `200`, the actual status code is in the response.\n\nif not `200`, then the error is from the client.\n\nhandle error base on this\n\n> TEST SUCCESS RESPONSE \n  \n\n``` json\n{\n    \"statusCode\": 200,\n    \"error\": \"\",\n    \"message\": \"success\",\n    \"data\": [\n        {\n            \"id\": \"0460073C449C\",\n            \"name\": \"Headquarter\",\n            \"address\": null,\n            \"defaultCurrency\": \"NGN\"\n        }\n    ]\n}\n\n```\n\n> TEST FAILED RESPONSE \n  \n\n``` json\n{\n    \"statusCode\": 404,\n    \"error\": \"The api route could not be found\",\n    \"message\": \"\",\n    \"data\": {}\n}\n\n```",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28086042"
+	},
+	"item": [
+		{
+			"name": "v1",
+			"item": [
+				{
+					"name": "AUTH",
+					"item": [
+						{
+							"name": "register",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('statusCode');",
+											"    pm.expect(responseData).to.have.property('error');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"});",
+											"",
+											"pm.test(\"statusCode is 200\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.statusCode).to.exist.and.to.be.a('number');",
+											"    pm.expect(responseData.statusCode).to.equal(200);",
+											"});",
+											"",
+											"pm.test(\"Error is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.error).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Message is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.message).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Response has an empty data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.exist.and.to.be.empty;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Validate the format of the data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.be.an('object');",
+											"});",
+											"",
+											"",
+											"// pm.test(\"Verify data object properties\", function () {",
+											"//     const responseData = pm.response.json().data;",
+											"",
+											"//     pm.expect(responseData).to.be.an('object');",
+											"//     pm.expect(responseData).to.have.property('property1');",
+											"//     pm.expect(responseData).to.have.property('property2');",
+											"//     pm.expect(responseData).to.have.property('property3');",
+											"// });",
+											"",
+											"pm.test(\"Verify that the error field is empty\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.error).to.be.empty;",
+											"});",
+											"",
+											"// Stores the value of the statusCode field in a global variable",
+											"// var statusCode = pm.response.json().statusCode;",
+											"// pm.variables.set(\"adminEmail\", statusCode);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.variables.set(\"adminEmail\", \"azeez.ibrahim@qclose.net\");",
+											"pm.variables.set(\"adminFirstName\", \"Azeez\");",
+											"pm.variables.set(\"adminLastName\", \"Ibrahim\");",
+											"pm.variables.set(\"businessName\", \"plait\");",
+											"pm.variables.set(\"adminPassword\", \"A.z123456\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"{{adminEmail}}\",\n    \"firstName\": \"{{adminFirstName}}\",\n    \"lastName\": \"{{adminLastName}}\",\n    \"businessname\": \"{{businessName}}\",\n    \"country\": \"Nigeria\",\n    \"currency\": \"NGN\",\n    \"password\": \"{{adminPassword}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/v1/auth/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"v1",
+										"auth",
+										"register"
+									]
+								},
+								"description": "Sign up a new account"
+							},
+							"response": [
+								{
+									"name": "register",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"\",\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"businessname\": \"\",\n    \"country\": \"Nigeria\",\n    \"currency\": \"NGN\",\n    \"password\": \"\"\n\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/auth/register",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"auth",
+												"register"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "verify email link",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('statusCode');",
+											"    pm.expect(responseData).to.have.property('error');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"});",
+											"",
+											"pm.test(\"statusCode is 200\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.statusCode).to.exist.and.to.be.a('number');",
+											"    pm.expect(responseData.statusCode).to.equal(200);",
+											"});",
+											"",
+											"pm.test(\"Error is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.error).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Message is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.message).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Response has a non empty data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.exist.and.to.not.be.empty;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Validate the format of the data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.be.an('object');",
+											"});",
+											"",
+											"pm.test(\"Verify that the error field is empty\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.error).to.be.empty;",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.variables.set(\"verifyCode\", \"175b5757e4fd80745f74d55869442f95a7b56e20c52252096b1f85a1af9caa17183a50fabfbad0b4a1f344becbec2d396148692cc1be5a61006769ffc7a6b9a0034ed4337c578855c700d1a5b8a056c3de8093dcbacaec8f4831e0498ac180f5c6da1c3e7380c97ecbc0b055ea17b358\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"code\":\"{{verifyCode}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/auth/email/verify",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"email",
+										"verify"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "verify",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"code\":\"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/auth/email/verify",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"auth",
+												"email",
+												"verify"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('statusCode');",
+											"    pm.expect(responseData).to.have.property('error');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"});",
+											"",
+											"pm.test(\"statusCode is 200\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.statusCode).to.exist.and.to.be.a('number');",
+											"    pm.expect(responseData.statusCode).to.equal(200);",
+											"});",
+											"",
+											"pm.test(\"Error is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.error).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Message is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.message).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Response has a non-empty data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.exist.and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Validate the format of the data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.be.an('object');",
+											"});",
+											"",
+											"pm.test(\"Verify data object properties\", function () {",
+											"    const responseData = pm.response.json().data;",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('token');",
+											"});",
+											"",
+											"pm.test(\"Verify that the error field is empty\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.error).to.be.empty;",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.variables.set(\"adminEmail\", \"azeez.ibrahim@qclose.net\");",
+											"pm.variables.set(\"adminPassword\", \"A.z123456\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"{{adminEmail}}\",\n    \"password\": \"{{adminPassword}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/v1/auth/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"v1",
+										"auth",
+										"login"
+									]
+								},
+								"description": "Login to the application"
+							},
+							"response": [
+								{
+									"name": "login",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"\",\n    \"password\": \"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/auth/login",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"auth",
+												"login"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "authenticate",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('statusCode');",
+											"    pm.expect(responseData).to.have.property('error');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"});",
+											"",
+											"pm.test(\"statusCode is 200\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.statusCode).to.exist.and.to.be.a('number');",
+											"    pm.expect(responseData.statusCode).to.equal(200);",
+											"});",
+											"",
+											"pm.test(\"Error is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.error).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Message is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.message).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Response has a non-empty data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.exist.and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Validate the format of the data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.be.an('object');",
+											"});",
+											"",
+											"pm.test(\"Verify data object properties\", function () {",
+											"    const responseData = pm.response.json().data;",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('businessId');",
+											"    pm.expect(responseData).to.have.property('branchId');",
+											"    pm.expect(responseData).to.have.property('businessName');",
+											"    pm.expect(responseData).to.have.property('role');",
+											"    pm.expect(responseData).to.have.property('name');",
+											"    pm.expect(responseData).to.have.property('email');",
+											"});",
+											"",
+											"pm.test(\"Verify that the error field is empty\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.error).to.be.empty;",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/auth/authenticate",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"authenticate"
+									]
+								},
+								"description": "use it to authenticate a page when needed,\n\nuse this to get the user\n\n- role\n- branch id\n- business id"
+							},
+							"response": []
+						},
+						{
+							"name": "reset password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('statusCode');",
+											"    pm.expect(responseData).to.have.property('error');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"});",
+											"",
+											"pm.test(\"statusCode is 200\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.statusCode).to.exist.and.to.be.a('number');",
+											"    pm.expect(responseData.statusCode).to.equal(200);",
+											"});",
+											"",
+											"pm.test(\"Error is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.error).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Message is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.message).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Response has an empty data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.exist.and.to.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Validate the format of the data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.be.an('object');",
+											"});",
+											"",
+											"pm.test(\"Verify that the error field is empty\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.error).to.be.empty;",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"{{adminEmail}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/auth/password/reset",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"password",
+										"reset"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "reset",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/auth/password/reset",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"auth",
+												"password",
+												"reset"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "set password",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"password\": \"{{adminPassword}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/auth/password/set",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"password",
+										"set"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "set",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"password\": \"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/auth/password/set",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"auth",
+												"password",
+												"set"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "resend verification mail",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/auth/email/resend",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"email",
+										"resend"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "change password",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"oldPassword\":\"\",\n    \"newPassword\":\"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/auth/password/change",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"password",
+										"change"
+									]
+								},
+								"description": "{\n\n\"oldPassword\":\"\",\n\n\"newPassword\":\"\"\n\n}"
+							},
+							"response": []
+						},
+						{
+							"name": "logout",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/auth/logout",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"logout"
+									]
+								},
+								"description": "use it to authenticate a page when needed,\n\nuse this to get the user\n\n- role\n- branch id\n- business id"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "BRANCH",
+					"item": [
+						{
+							"name": "item",
+							"item": [
+								{
+									"name": "get branch inventory item",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "",
+												"value": "",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{host}}/v1/branch/item?limit=&page=&s=&branchId=",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"branch",
+												"item"
+											],
+											"query": [
+												{
+													"key": "limit",
+													"value": ""
+												},
+												{
+													"key": "page",
+													"value": ""
+												},
+												{
+													"key": "s",
+													"value": "",
+													"description": "search for a particular item in the branch"
+												},
+												{
+													"key": "branchId",
+													"value": "",
+													"description": "branch id to fetch from (required)"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "item",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "User-Agent",
+														"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+														"type": "text"
+													}
+												],
+												"url": {
+													"raw": "{{host}}/v1/branch/item?limit=&page=&s=&branchId",
+													"host": [
+														"{{host}}"
+													],
+													"path": [
+														"v1",
+														"branch",
+														"item"
+													],
+													"query": [
+														{
+															"key": "limit",
+															"value": ""
+														},
+														{
+															"key": "page",
+															"value": ""
+														},
+														{
+															"key": "s",
+															"value": ""
+														},
+														{
+															"key": "branchId",
+															"value": null,
+															"description": "branch id to fetch from"
+														}
+													]
+												}
+											},
+											"_postman_previewlanguage": "Text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							],
+							"description": "Access inventory item of particular branch"
+						},
+						{
+							"name": "admin",
+							"item": [
+								{
+									"name": "add branch admin",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"email\": \"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/branch/admin",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"branch",
+												"admin"
+											]
+										},
+										"description": "Create new category\n\n---\n\n---"
+									},
+									"response": [
+										{
+											"name": "add branch admin",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "User-Agent",
+														"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"email\": \"\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{host}}/v1/branch/admin",
+													"host": [
+														"{{host}}"
+													],
+													"path": [
+														"v1",
+														"branch",
+														"admin"
+													]
+												}
+											},
+											"_postman_previewlanguage": "Text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								},
+								{
+									"name": "get branch users",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/v1/branch/admin?limit=&page=&s=",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"branch",
+												"admin"
+											],
+											"query": [
+												{
+													"key": "limit",
+													"value": ""
+												},
+												{
+													"key": "page",
+													"value": ""
+												},
+												{
+													"key": "s",
+													"value": "",
+													"description": "search for a particular item in the branch"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "get branch users",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "User-Agent",
+														"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+														"type": "text"
+													}
+												],
+												"url": {
+													"raw": "{{host}}/v1/branch/admin?limit=&page=&s=",
+													"host": [
+														"{{host}}"
+													],
+													"path": [
+														"v1",
+														"branch",
+														"admin"
+													],
+													"query": [
+														{
+															"key": "limit",
+															"value": ""
+														},
+														{
+															"key": "page",
+															"value": ""
+														},
+														{
+															"key": "s",
+															"value": "",
+															"description": "search for a particular item in the branch"
+														}
+													]
+												}
+											},
+											"_postman_previewlanguage": "Text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								},
+								{
+									"name": "Resend invitation",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"id\": \"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/branch/admin/invite",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"branch",
+												"admin",
+												"invite"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Resend invitation",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"id\": \"\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{host}}/v1/branch/admin/invite",
+													"host": [
+														"{{host}}"
+													],
+													"path": [
+														"v1",
+														"branch",
+														"admin",
+														"invite"
+													]
+												}
+											},
+											"_postman_previewlanguage": "Text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							],
+							"description": "Access inventory item of particular branch"
+						},
+						{
+							"name": "fetch all",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/v1/branch",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"branch"
+									]
+								},
+								"description": "List all the branches the user have access to.\n\nif is a **SUPER ADMIN** all the branches will be listed\n\nif is a **NORMAL USER** only the branch that they have access to will be listed\n\n---\n\n---"
+							},
+							"response": [
+								{
+									"name": "fetch all",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{host}}/v1/branch",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"branch"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "create a branch",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"\",\n    \"address\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/branch",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"branch"
+									]
+								},
+								"description": "Create new category\n\n---\n\n---"
+							},
+							"response": [
+								{
+									"name": "create a branch",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"new branch\",\n    \"address\": \"new location number 23, Nigeria\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/branch",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"branch"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "edit a branch",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"\",\n    \"name\": \"\",\n    \"address\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/branch",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"branch"
+									]
+								},
+								"description": "Create new category\n\n---\n\n---"
+							},
+							"response": [
+								{
+									"name": "edit a branch",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"id\": \"1731D17B30D3\",\n    \"name\": \"Headquarters\",\n    \"address\": \"new location number 23, Nigeria\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/branch",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"branch"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "swich",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/branch/switch",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"branch",
+										"switch"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "swich branch",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"id\": \"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/branch/switch",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"branch",
+												"switch"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					],
+					"description": "Contains the branch endpoint"
+				},
+				{
+					"name": "BUSINESS",
+					"item": [
+						{
+							"name": "fetch all",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/business",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"business"
+									]
+								},
+								"description": "List all the branches the user have access to.\n\nif is a **SUPER ADMIN** all the branches will be listed\n\nif is a **NORMAL USER** only the branch that they have access to will be listed\n\n---\n\n---"
+							},
+							"response": [
+								{
+									"name": "fetch all",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{host}}/v1/business",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"business"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "create a business",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/business",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"business"
+									]
+								},
+								"description": "Create new category\n\n---\n\n---"
+							},
+							"response": [
+								{
+									"name": "create a branch",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"new business\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/business",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"business"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "edit a business",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"\",\n    \"name\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/business",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"business"
+									]
+								},
+								"description": "Create new category\n\n---\n\n---"
+							},
+							"response": [
+								{
+									"name": "edit a business",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"id\": \"1731D17B30D3\",\n    \"name\": \"qclose\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/business",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"business"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "swich",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/business/switch",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"business",
+										"switch"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "swich branch",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"id\": \"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/business/switch",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"business",
+												"switch"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "change currency",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/business/currency",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"business",
+										"currency"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Contains the branch endpoint"
+				},
+				{
+					"name": "CATEGORY",
+					"item": [
+						{
+							"name": "create a category",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.variables.set(\"categoryName\", \"plate\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('statusCode');",
+											"    pm.expect(responseData).to.have.property('error');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"});",
+											"",
+											"pm.test(\"statusCode is 200\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.statusCode).to.exist.and.to.be.a('number');",
+											"    pm.expect(responseData.statusCode).to.equal(200);",
+											"});",
+											"",
+											"pm.test(\"Error is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.error).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Message is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.message).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Response has an empty data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.exist.and.to.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Validate the format of the data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.be.an('object');",
+											"});",
+											"",
+											"pm.test(\"Verify that the error field is empty\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.error).to.be.empty;",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"{{categoryName}}\" \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/category",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"category"
+									]
+								},
+								"description": "Create new category\n\n---\n\n---"
+							},
+							"response": [
+								{
+									"name": "create a category",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/category",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"category"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "fetch all",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('statusCode');",
+											"    pm.expect(responseData).to.have.property('error');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"});",
+											"",
+											"pm.test(\"statusCode is 200\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.statusCode).to.exist.and.to.be.a('number');",
+											"    pm.expect(responseData.statusCode).to.equal(200);",
+											"});",
+											"",
+											"pm.test(\"Error is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.error).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Message is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.message).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Response has a  non-empty data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.exist.and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Validate the format of the data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.be.an('object');",
+											"});",
+											"",
+											"pm.test(\"Verify that the error field is empty\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.error).to.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Verify data object properties\", function () {",
+											"    const responseData = pm.response.json().data;",
+											"",
+											"    pm.expect(responseData.rows).to.be.an('array');",
+											"    const categoryId = responseData.rows[0].id;",
+											"    pm.variables.set(\"categoryId\", categoryId);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/v1/category?limit=&page=&s=",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"category"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "",
+											"description": "number of categories to show"
+										},
+										{
+											"key": "page",
+											"value": "",
+											"description": "use it for pagination"
+										},
+										{
+											"key": "s",
+											"value": "",
+											"description": "for searching for a particular category using the name or date"
+										}
+									]
+								},
+								"description": "List available category for the current branch\n\n---\n\n---"
+							},
+							"response": [
+								{
+									"name": "fetch all",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{host}}/v1/category?limit=1&page=1&s=",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"category"
+											],
+											"query": [
+												{
+													"key": "limit",
+													"value": "1",
+													"description": "number of categories to show"
+												},
+												{
+													"key": "page",
+													"value": "1",
+													"description": "use it for pagination"
+												},
+												{
+													"key": "s",
+													"value": "",
+													"description": "for searching for a particular category"
+												}
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "edit category",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.variables.set(\"categoryName_edit\", \"plate_edit\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('statusCode');",
+											"    pm.expect(responseData).to.have.property('error');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"});",
+											"",
+											"pm.test(\"statusCode is 200\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.statusCode).to.exist.and.to.be.a('number');",
+											"    pm.expect(responseData.statusCode).to.equal(200);",
+											"});",
+											"",
+											"pm.test(\"Error is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.error).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Message is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.message).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Response has an empty data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.exist.and.to.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Validate the format of the data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.be.an('object');",
+											"});",
+											"",
+											"pm.test(\"Verify that the error field is empty\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.error).to.be.empty;",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"{{categoryId}}\",\n    \"name\": \"{{categoryName_edit}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/category",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"category"
+									]
+								},
+								"description": "Edit a category\n\n---\n\n---"
+							},
+							"response": [
+								{
+									"name": "edit category",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"id\": \"\",\n    \"name\": \"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/category",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"category"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "delete category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('statusCode');",
+											"    pm.expect(responseData).to.have.property('error');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"});",
+											"",
+											"pm.test(\"statusCode is 200\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.statusCode).to.exist.and.to.be.a('number');",
+											"    pm.expect(responseData.statusCode).to.equal(200);",
+											"});",
+											"",
+											"pm.test(\"Error is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.error).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Message is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.message).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Response has an empty data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.exist.and.to.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Validate the format of the data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.be.an('object');",
+											"});",
+											"",
+											"pm.test(\"Verify that the error field is empty\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.error).to.be.empty;",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"{{categoryId}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/category",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"category"
+									]
+								},
+								"description": "Delete a category\n\n---\n\n---"
+							},
+							"response": [
+								{
+									"name": "delete category",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"id\": \"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/category",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"category"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					],
+					"description": "Contains the category endpoint"
+				},
+				{
+					"name": "ITEM",
+					"item": [
+						{
+							"name": "add item",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('statusCode');",
+											"    pm.expect(responseData).to.have.property('error');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"});",
+											"",
+											"pm.test(\"statusCode is 200\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.statusCode).to.exist.and.to.be.a('number');",
+											"    pm.expect(responseData.statusCode).to.equal(200);",
+											"});",
+											"",
+											"pm.test(\"Error is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.error).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Message is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.message).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Response has an empty data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.exist.and.to.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Validate the format of the data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.be.an('object');",
+											"});",
+											"",
+											"pm.test(\"Verify that the error field is empty\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.error).to.be.empty;",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"new item\",\n    \"category\": \"{{categoryId}}\",\n    \"code\": \"DVC2937\",\n    \"available\": \"1000\",\n    \"price\": \"200\",\n    \"minimum\": \"100\",\n    \"batch\": \"ADS\",\n    \"measurmentValue\": \"\",\n    \"measurmentName\":\"\",\n    \"measurementUnit\": \"\",\n    \"manufacturerName\": \"\"\n\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/item",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"item"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "add item",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\":\"my first item\",\n    \"category\": \"09D860DEFABB\",\n    \"code\": \"SKU-1029\",\n    \"available\": \"1000\",\n    \"price\": \"\",\n    \"minimum\": \"200\",\n    \"batch\": \"\",\n    \"measurmentValue\": \"\",\n    \"measurmentName\":\"\",\n    \"measurementUnit\": \"\",\n    \"manufacturerName\": \"\"\n\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/item",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"item"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "fetch all",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('statusCode');",
+											"    pm.expect(responseData).to.have.property('error');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"});",
+											"",
+											"pm.test(\"statusCode is 200\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.statusCode).to.exist.and.to.be.a('number');",
+											"    pm.expect(responseData.statusCode).to.equal(200);",
+											"});",
+											"",
+											"pm.test(\"Error is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.error).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Message is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.message).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Response has a  non-empty data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.exist.and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Validate the format of the data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.be.an('object');",
+											"});",
+											"",
+											"pm.test(\"Verify that the error field is empty\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.error).to.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Verify data object properties\", function () {",
+											"    const responseData = pm.response.json().data;",
+											"",
+											"    pm.expect(responseData.rows).to.be.an('array');",
+											"    const itemId = responseData.rows[0].id;",
+											"    pm.variables.set(\"itemId\", itemId);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/v1/item?limit=&page=&s=",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"item"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "",
+											"description": "number of item to show"
+										},
+										{
+											"key": "page",
+											"value": "",
+											"description": "use it for pagination"
+										},
+										{
+											"key": "s",
+											"value": "",
+											"description": "for searching for a particular item"
+										}
+									]
+								},
+								"description": "List available category for the current branch\n\n---\n\n---"
+							},
+							"response": [
+								{
+									"name": "fetch all",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{host}}/v1/item?limit=&page=&s=",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"item"
+											],
+											"query": [
+												{
+													"key": "limit",
+													"value": "",
+													"description": "number of item to show"
+												},
+												{
+													"key": "page",
+													"value": "",
+													"description": "use it for pagination"
+												},
+												{
+													"key": "s",
+													"value": "",
+													"description": "for searching for a particular item"
+												}
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "edit item",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('statusCode');",
+											"    pm.expect(responseData).to.have.property('error');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"});",
+											"",
+											"pm.test(\"statusCode is 200\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.statusCode).to.exist.and.to.be.a('number');",
+											"    pm.expect(responseData.statusCode).to.equal(200);",
+											"});",
+											"",
+											"pm.test(\"Error is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.error).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Message is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.message).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Response has an empty data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.exist.and.to.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Validate the format of the data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.be.an('object');",
+											"});",
+											"",
+											"pm.test(\"Verify that the error field is empty\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.error).to.be.empty;",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"{{itemId}}\",\n    \"name\":\"edited name\",\n    \"category\": \"{{categoryId}}\",\n    \"code\": \"DFV234\",\n    \"price\": \"\",\n    \"minimum\": \"\",\n    \"batch\": \"\",\n    \"measurmentValue\": \"\",\n    \"measurmentName\":\"\",\n    \"measurementUnit\": \"\",\n    \"manufacturerName\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/item",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"item"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "edit item",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"id\": \"\",\n    \"name\":\"\",\n    \"category\": \"\",\n    \"code\": \"\",\n    \"price\": \"\",\n    \"minimum\": \"\",\n    \"batch\": \"\",\n    \"measurmentValue\": \"\",\n    \"measurmentName\":\"\",\n    \"measurementUnit\": \"\",\n    \"manufacturerName\": \"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/item",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"item"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "restock",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('statusCode');",
+											"    pm.expect(responseData).to.have.property('error');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"});",
+											"",
+											"pm.test(\"statusCode is 200\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.statusCode).to.exist.and.to.be.a('number');",
+											"    pm.expect(responseData.statusCode).to.equal(200);",
+											"});",
+											"",
+											"pm.test(\"Error is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.error).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Message is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.message).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Response has an empty data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.exist.and.to.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Validate the format of the data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.be.an('object');",
+											"});",
+											"",
+											"pm.test(\"Verify that the error field is empty\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.error).to.be.empty;",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"{{itemId}}\",\n    \"available\": \"200\",\n    \"price\": \"\",\n    \"batch\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/item/restock",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"item",
+										"restock"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "restock item",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"id\": \"\",\n    \"available\": \"\",\n    \"price\": \"\",\n    \"batch\": \"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/item/restock",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"item",
+												"restock"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Adjust item",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('statusCode');",
+											"    pm.expect(responseData).to.have.property('error');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"});",
+											"",
+											"pm.test(\"statusCode is 200\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.statusCode).to.exist.and.to.be.a('number');",
+											"    pm.expect(responseData.statusCode).to.equal(200);",
+											"});",
+											"",
+											"pm.test(\"Error is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.error).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Message is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.message).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Response has a  non-empty data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.exist.and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Validate the format of the data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.be.an('object');",
+											"});",
+											"",
+											"pm.test(\"Verify that the error field is empty\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.error).to.be.empty;",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"{{itemId}}\",\n    \"quantity\": \"50\"\n   \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/item/adjust",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"item",
+										"adjust"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Adjust item",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"id\": \"\",\n    \"quantity\": \"\"\n   \n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/item/adjust",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"item",
+												"adjust"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "inventory report",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('statusCode');",
+											"    pm.expect(responseData).to.have.property('error');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"});",
+											"",
+											"pm.test(\"statusCode is 200\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.statusCode).to.exist.and.to.be.a('number');",
+											"    pm.expect(responseData.statusCode).to.equal(200);",
+											"});",
+											"",
+											"pm.test(\"Error is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.error).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Message is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.message).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Response has a  non-empty data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.exist.and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Validate the format of the data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.be.an('object');",
+											"});",
+											"",
+											"pm.test(\"Verify that the error field is empty\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.error).to.be.empty;",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/v1/item/inventory/report",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"item",
+										"inventory",
+										"report"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "transfer item",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"item\": \"\",\n    \"quantity\": \"\",\n    \"branch\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/item/transfer",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"item",
+										"transfer"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "transfer item",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"item\": \"\",\n    \"quantity\": \"\",\n    \"branch\": \"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/item/transfer",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"item",
+												"transfer"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Delete item",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('statusCode');",
+											"    pm.expect(responseData).to.have.property('error');",
+											"    pm.expect(responseData).to.have.property('message');",
+											"    pm.expect(responseData).to.have.property('data');",
+											"});",
+											"",
+											"pm.test(\"statusCode is 200\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.statusCode).to.exist.and.to.be.a('number');",
+											"    pm.expect(responseData.statusCode).to.equal(200);",
+											"});",
+											"",
+											"pm.test(\"Error is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.error).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Message is a string\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.message).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Response has an empty data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.exist.and.to.not.be.empty;",
+											"});",
+											"",
+											"pm.test(\"Validate the format of the data object\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData.data).to.be.an('object');",
+											"});",
+											"",
+											"pm.test(\"Verify that the error field is empty\", function () {",
+											"    const responseData = pm.response.json();",
+											"",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.error).to.be.empty;",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"{{itemId}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/item",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"item"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Stock transfer history",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/v1/item/history/transfer",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"item",
+										"history",
+										"transfer"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Adjust History",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/v1/item/adjust",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"item",
+										"adjust"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Restock history",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/v1/item/restock",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"item",
+										"restock"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Contains the item endpoint"
+				},
+				{
+					"name": "USER",
+					"item": [
+						{
+							"name": "list user",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/v1/user/?limit=&page=&s=",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										""
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": ""
+										},
+										{
+											"key": "page",
+											"value": ""
+										},
+										{
+											"key": "s",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list sessions",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/v1/user/session",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										"session"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete session",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/user/session",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										"session"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add user",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"email\": \"\",\n    \"role\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/user",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"user"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "add user",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\",\n    \"email\": \"\",\n    \"role\": \"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:5000/v1/user",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "5000",
+											"path": [
+												"v1",
+												"user"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "deactivate",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/user/deactivate",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										"deactivate"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "add user",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"id\": \"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:5000/v1/user/deactivate",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "5000",
+											"path": [
+												"v1",
+												"user",
+												"deactivate"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Change role",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"userId\": \"\",\n\t\"role\": \"\" \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/user/role",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										"role"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Resend Invitation",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/user/invite",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										"invite"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Resend Invitation",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"id\": \"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/user/invite",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"user",
+												"invite"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "PAYMENT",
+					"item": [
+						{
+							"name": "Stripe checkout",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"priceId\": \"\",\n    \"interval\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/v1/payment/stripe",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"v1",
+										"payment",
+										"stripe"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List pricings",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:5000/v1/subscription/price",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"v1",
+										"subscription",
+										"price"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:5000",
+			"type": "string"
+		}
+	]
+}

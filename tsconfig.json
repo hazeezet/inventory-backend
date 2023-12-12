@@ -1,0 +1,26 @@
+{
+	"extends": "fastify-tsconfig",
+	"compilerOptions": {
+		"target": "ES2022",
+		"strict": true,
+		"types": ["node", "mocha"],
+		"outDir": "dist",
+		"noEmit": true,
+		"sourceMap": false,
+		"esModuleInterop": true,
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"baseUrl": ".",
+		"paths": {
+			"#services/*": ["src/services/*"],
+			"#hooks/*": ["src/hooks/*"],
+			"#types/*": ["src/types/*"],
+			"#plugins/*": ["src/plugins/*"],
+			"#db/mysql/*": ["src/plugins/database/mysql/tables/*"],
+			"#db/mysql/types/*": ["src/plugins/database/mysql/tables/types/*"],
+			"#test/*": ["test/*"]
+		}
+	},
+	"include": ["src/**/*.ts", "src/**/*.html"],
+	"exclude": ["types/*"]
+}

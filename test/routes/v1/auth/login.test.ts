@@ -1,0 +1,66 @@
+import supertest from "supertest";
+import assert from "assert";
+import * as chai from "chai";
+//@ts-ignore
+import { host, userAgent } from "#test/helper.ts";
+
+const request = supertest.agent(host);
+const expect = chai.expect;
+
+type Response = {
+    statusCode: number;
+    error: string;
+    message: string;
+    data: object;
+}
+
+describe("Login", async function () {
+
+    let result: Response;
+    it("login", async function () {
+        const res = await request.post("/v1/auth/login")
+            .set('User-Agent', userAgent)
+            .set("Accept", "application/json")
+            .send({
+                email: process.env.ADMIN_EMAIL,
+                password: process.env.ADMIN_PASSWORD
+            })
+            .expect(200)
+            .expect("Content-Type", /json/)
+            .expect('set-cookie', /qinv_token=/)
+        result = res.body as Response;
+    });
+
+    it("all properties are available", async function () {
+        const expectedProperties = ["statusCode", "error", "message", "data"];
+        const responseBodyKeys = Object.keys(result);
+        expectedProperties.forEach((property) => {
+            assert.ok(responseBodyKeys.includes(property), `Missing property: ${property}`);
+        });
+    });
+
+    it("status code is ok", async function () {
+        assert.strictEqual(result.statusCode, 200, `request failed: ${result.error}`)
+    });
+
+    it("error is empty", async function () {
+        assert.strictEqual(result.error, "", "error should be empty")
+    });
+
+    it("success message", async function () {
+        assert.strictEqual(result.message, "success", "response message should be available")
+    });
+
+    it("data is an object", async function () {
+        assert.strictEqual(typeof result.data, 'object', 'data should be an object');
+        expect(result.data).to.not.be.empty;
+    });
+
+    it("data has all properties", async function () {
+        const expectedProperties = ["token"];
+        const responseBodyKeys = Object.keys(result.data);
+        expectedProperties.forEach((property) => {
+            assert.ok(responseBodyKeys.includes(property), `Missing property: ${property}`);
+        });
+    });
+});

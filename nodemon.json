@@ -1,0 +1,12 @@
+{
+	"watch": [
+		"src"
+	],
+	"ignore": [
+		"src/**/*.test.ts",
+		"node_modules"
+	],
+	"ext": "ts,mjs,js,json",
+	"exec": "tsc && etsc && node dist/server.js",
+	"legacyWatch": true
+}

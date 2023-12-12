@@ -1,0 +1,3 @@
+bail: true
+require: test/helper.ts
+dry-run: false
